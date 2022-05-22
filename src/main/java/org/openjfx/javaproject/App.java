@@ -31,8 +31,22 @@ public class App extends Application {
         renderThings(messageHistory);
         
         //Liz: box that new messages are typed in
-        TextField newMessageBox = new TextField();
+        //Jorge: added an Event handler 
+        TextField newMessageBox = new TextField("Message");
+        newMessageBox.setOnAction(e -> new Message(org.openjfx.javaproject.UserStore.getUserName,newMessageBox.getText()));
         layout.getChildren().add(newMessageBox);
+        
+        //Jorge: adding a button that sends a message >:)
+        Button btSend = new Button("Send");
+	    btSend.setOnAction(new EventHandler<ActionEvent>() {
+	    	
+	    	@Override
+	    	public void handle(ActionEvent onBtPress) {
+	    		
+	    		Message message = new Message(this.getUserName(),newMessageBox.getText());
+	    	}
+	    });
+        layout.getChildren().add(btSend);
         
         //Liz: sets the stage and scene
         Scene scene = new Scene(layout, 640, 400);

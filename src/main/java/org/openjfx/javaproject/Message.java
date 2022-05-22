@@ -14,9 +14,6 @@ class Message {
 		this.timestamp = new Timestamp(System.currentTimeMillis());
 		this.messageID = totalMessages; //Liz: uses total number of messages to uniquely ID them
 		totalMessages += 1; //Liz: increments number of total messages -- a static variable so shared by all instances
-		
-		//Also not sure if this syntax is correct
-		org.openjfx.javaproject.MessageStore.addMessage(this);
 	}
 	
 	//Liz: these are getters: self-explanatory

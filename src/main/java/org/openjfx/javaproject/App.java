@@ -2,10 +2,13 @@ package org.openjfx.javaproject;
 import java.util.ArrayList;
 
 import javafx.application.Application;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
@@ -17,12 +20,70 @@ import javafx.stage.Stage;
  * JavaFX App
  */
 public class App extends Application {
+	//Liz: this creates layout
+	VBox layout = new VBox();
+    
+    //Liz: sign-up screen
+    VBox signupScreen = new VBox();
+    Label signupTitle = new Label("Sign up:");
+    Label signupUsernameLabel = new Label("Username: ");
+    TextField signupUsernameBox = new TextField();
+    Label signupPasswordLabel = new Label("Password: ");
+    PasswordField signupPasswordBox = new PasswordField();
+    Label signupErrorLabel = new Label("");
+    Button signUpSubmit = new Button("Sign Up");
+    Button backToLogin = new Button("Back to Login");
+    
+
+    //Liz: login screen
+    VBox loginScreen = new VBox();
+    Label loginTitle = new Label("Login:");
+    Label usernameLabel = new Label("Username: ");
+    TextField usernameBox = new TextField();
+    Label passwordLabel = new Label("Password: ");
+    PasswordField passwordBox = new PasswordField();
+    Label errorLabel = new Label("");
+    Button loginSend = new Button("Login");
+    Button signUpButton = new Button("Sign Up");
+    Label successLabel = new Label("");
+
 
     @Override
     public void start(Stage stage) {
-    	//Liz: this creates layout
-        VBox layout = new VBox();
-        
+    	//Liz: construct screen layouts
+    	loginScreen.getChildren().add(loginTitle);
+    	loginScreen.getChildren().add(usernameLabel);
+    	loginScreen.getChildren().add(usernameBox);
+    	loginScreen.getChildren().add(passwordLabel);
+    	loginScreen.getChildren().add(passwordBox);
+    	loginScreen.getChildren().add(errorLabel);
+    	loginScreen.getChildren().add(loginSend);
+    	loginScreen.getChildren().add(signUpButton);
+		loginScreen.getChildren().add(successLabel);
+    	    
+    	signupScreen.getChildren().add(signupTitle);
+    	signupScreen.getChildren().add(signupUsernameLabel);
+    	signupScreen.getChildren().add(signupUsernameBox);
+    	signupScreen.getChildren().add(signupPasswordLabel);
+    	signupScreen.getChildren().add(signupPasswordBox);
+    	signupScreen.getChildren().add(signupErrorLabel);
+    	signupScreen.getChildren().add(signUpSubmit);
+    	signupScreen.getChildren().add(backToLogin);
+    	    
+    	    
+    	//Liz: Initialize app.
+    	layout.getChildren().add(loginScreen);	
+    	
+        loginSend.setOnAction(loggingInEvent);
+    	signUpSubmit.setOnAction(signingUpEvent);
+        signUpButton.setOnAction(toSignUpScreenEvent);
+    	backToLogin.setOnAction(toLoginScreenEvent);
+    	
+        Scene scene = new Scene(layout, 640, 400);
+        stage.setScene(scene);
+        stage.setResizable(false);
+        stage.show();
+        /*
         //Liz: scrollable area that contains the message history
         //Liz: message history should be rendered in this element
         StackPane messageHistory = new StackPane();
@@ -31,10 +92,14 @@ public class App extends Application {
         renderThings(messageHistory);
         
         //Liz: box that new messages are typed in
-        //Jorge: added an Event handler 
+        */
+        
+
+        /* //Jorge: added an Event handler 
         TextField newMessageBox = new TextField("Message");
-        newMessageBox.setOnAction(e -> new Message(org.openjfx.javaproject.UserStore.getUserName,newMessageBox.getText()));
+        newMessageBox.setOnAction(e -> new Message(UserStore.getUserName,newMessageBox.getText()));
         layout.getChildren().add(newMessageBox);
+        //TODO: Liz: make a call to store message here.
         
         //Jorge: adding a button that sends a message >:)
         Button btSend = new Button("Send");
@@ -46,13 +111,9 @@ public class App extends Application {
 	    		Message message = new Message(this.getUserName(),newMessageBox.getText());
 	    	}
 	    });
-        layout.getChildren().add(btSend);
+        layout.getChildren().add(btSend); */
         
-        //Liz: sets the stage and scene
-        Scene scene = new Scene(layout, 640, 400);
-        stage.setScene(scene);
-        stage.setResizable(false);
-        stage.show();
+
     }
 
     public static void main(String[] args) {
@@ -69,14 +130,14 @@ public class App extends Application {
     	//Liz: stores HBoxes of messages to be added
     	ArrayList<VBox> elementList = new ArrayList<>();
     	//Liz: this terribleness is necessary for my IDE to stop nagging me about messages being accessed in a static way
-    	ArrayList<Message> messages = org.openjfx.javaproject.MessageStore.messages;
+    	ArrayList<Message> messages = MessageStore.messages;
     	
     	//Liz: for each message: makes an HBox and adds to the ArrayList
     	try {
 			for(int i = 0; i<messages.size(); i++) { 
 				VBox thisElement = new VBox();
 				thisElement.setPrefWidth(360);
-				Label nameLabel = new Label(org.openjfx.javaproject.UserStore.getUsernameByID(messages.get(i).getAuthor()));
+				Label nameLabel = new Label(UserStore.getUsernameByID(messages.get(i).getAuthor()));
 				Label contents = new Label(messages.get(i).getContents());
 				thisElement.getChildren().add(nameLabel);
 				thisElement.getChildren().add(contents);
@@ -91,4 +152,56 @@ public class App extends Application {
     		messageHistory.getChildren().add(elementList.get(i));
     	}
     }
+    
+    //event handling methods
+    EventHandler<ActionEvent> signingUpEvent = new EventHandler<>() {
+    	@Override public void handle(ActionEvent e) {
+    		
+    		//Liz: checks if user w/ name exists, if not, makes new user by that name
+    		boolean exists = UserStore.userExists(signupUsernameBox.getText());
+    		if(exists == false) {
+    			UserStore.addUser(new User(signupUsernameBox.getText(), signupPasswordBox.getText()));
+    			successLabel.setText("Sign-up successful! Please log in!");
+    			layout.getChildren().clear();
+    			layout.getChildren().add(loginScreen);
+    			signupErrorLabel.setText("");
+    			errorLabel.setText("");
+    		} else if(exists == true){
+    			if(signupErrorLabel.getText() == "") {
+    				signupErrorLabel.setText("Error: User already exists.");
+    				successLabel.setText("");
+    			}
+    		}
+    	}
+    };
+    EventHandler<ActionEvent> loggingInEvent = new EventHandler<>() {
+    	@Override public void handle(ActionEvent e) {
+    		
+    		//checks if login details are valid
+    		boolean loginVerified = 
+Login.validateLogin(usernameBox.getText(), passwordBox.getText());
+    		if(loginVerified == true) {
+    			//TODO: successful login stuff
+    		} else {
+    			usernameBox.clear();
+    			passwordBox.clear();
+    			if(errorLabel.getText() == "") {
+    				errorLabel.setText("Invalid Username or Password.");
+    				successLabel.setText("");
+    			}
+    		}
+    	}
+    };
+    EventHandler<ActionEvent> toSignUpScreenEvent = new EventHandler<>() {
+        	@Override public void handle(ActionEvent e) {
+        		layout.getChildren().clear();
+        		layout.getChildren().add(signupScreen);
+        	}
+    };
+    EventHandler<ActionEvent> toLoginScreenEvent = new EventHandler<>() {
+    	@Override public void handle(ActionEvent e) {
+    		layout.getChildren().clear();
+    		layout.getChildren().add(loginScreen);
+    	}
+    };
 }

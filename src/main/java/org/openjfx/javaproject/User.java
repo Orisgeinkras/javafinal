@@ -17,9 +17,6 @@ class User {
 		this.password = password;
 		this.userID = numUsers;
 		numUsers += 1;
-		
-		//Liz: not sure if this is correct syntax but the IDE isn't complaining.
-		org.openjfx.javaproject.UserStore.addUser(this);
 	}
 	public int getUserID() {
 		return userID;

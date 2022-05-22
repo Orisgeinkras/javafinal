@@ -5,7 +5,7 @@ final class Login {
 		
 	}
 	public static boolean validateLogin(String Username, String password) {
-		User findUser = org.openjfx.javaproject.UserStore.findUserbyName(Username);
+		User findUser = UserStore.findUserbyName(Username);
 		if(findUser == null) {
 			return false;
 		} else {

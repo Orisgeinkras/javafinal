@@ -33,4 +33,12 @@ final class UserStore {
 	public static void addUser(User user) {
 		userStore.add(user);
 	}
+	public static boolean userExists(String userName) {
+		for(int i = 0; i < userStore.size(); i++) {
+			if(userStore.get(i).getUserName() == userName) {
+				return true;
+			}
+		}
+		return false;
+	}
 }

@@ -3,4 +3,5 @@ module org.openjfx.javaproject {
     exports org.openjfx.javaproject;
     requires transitive javafx.graphics;
 	requires java.sql;
+	requires javafx.base;
 }

@@ -89,7 +89,7 @@ public class App extends Application {
     	signupScreen.getChildren().add(signUpSubmit);
     	signupScreen.getChildren().add(backToLogin);
     	
-    	renderThings(messageHistory);
+
     	messageScreen.getChildren().add(messageHistory);
     	messageLine.getChildren().add(newMessageBox);
         //Jorge: adding a button that sends a message >:)
@@ -107,7 +107,7 @@ public class App extends Application {
 
     	    
     	//Initialize app.
-    	layout.getChildren().add(messageScreen);	
+    	layout.getChildren().add(loginScreen);	
     	messageHistory.setPrefSize(640, 375);
     	newMessageBox.setPrefWidth(597);
         Scene scene = new Scene(layout, 640, 400);
@@ -171,14 +171,14 @@ public class App extends Application {
     		
     		//checks if user w/ name exists, if not, makes new user by that name
     		boolean exists = UserStore.userExists(signupUsernameBox.getText());
-    		if(exists == false) {
+    		if(!exists) {
     			UserStore.addUser(new User(signupUsernameBox.getText(), signupPasswordBox.getText()));
     			successLabel.setText("Sign-up successful! Please log in!");
     			layout.getChildren().clear();
     			layout.getChildren().add(loginScreen);
     			signupErrorLabel.setText("");
     			errorLabel.setText("");
-    		} else if(exists == true){
+    		} else{
     			if(signupErrorLabel.getText() == "") {
     				signupErrorLabel.setText("Error: User already exists.");
     				successLabel.setText("");
@@ -191,9 +191,10 @@ public class App extends Application {
     		
     		//checks if login details are valid
     		boolean loginVerified = Login.validateLogin(usernameBox.getText(), passwordBox.getText());
-    		if(loginVerified == true) {
+    		if(loginVerified) {
     			sessionUserName = usernameBox.getText();
     			layout.getChildren().clear();
+    	    	renderThings(messageHistory);
     			layout.getChildren().add(messageScreen);
     		} else {
     			usernameBox.clear();

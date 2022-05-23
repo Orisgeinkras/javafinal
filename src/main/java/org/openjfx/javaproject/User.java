@@ -6,7 +6,7 @@ class User {
 	private String password;
 	public static int numUsers = 0;
 	public boolean checkPassword(String password) {
-		if(password == this.password) {
+		if(this.password.equals(password)) {
 			return true;
 		} else {
 			return false;

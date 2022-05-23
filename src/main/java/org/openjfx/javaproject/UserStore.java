@@ -16,7 +16,7 @@ final class UserStore {
 	}
 	public static User findUserbyName(String userName) {
 		for(int i = 0; i<userStore.size(); i++) {
-			if(userStore.get(i).getUserName() == userName)  {
+			if(userStore.get(i).getUserName().equals(userName))  {
 				return(userStore.get(i));
 			}
 		}

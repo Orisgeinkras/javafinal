@@ -10,7 +10,7 @@ final class Login {
 			return false;
 		} else {
 			boolean truePassword = findUser.checkPassword(password);
-			if(truePassword == true) {
+			if(truePassword) {
 				return true;
 			} else {
 				return false;

@@ -2,7 +2,7 @@ package org.openjfx.javaproject;
 import java.util.ArrayList;
 
 final class MessageStore {
-	//Liz: everything is static because this class should not be instantiated. ever.
+	//everything is static because this class should not be instantiated. ever.
 	//private constructor to prevent instantiation.
 	private MessageStore() {
 		

@@ -9,21 +9,21 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-/*Liz: please write your name in front of comments explaining your code 
- * so we know who is responsible for what code in case something breaks
- */
 /**
  * JavaFX App
  */
 public class App extends Application {
-	//Liz: this creates layout
+	//made some things class variables instead of clogging up the main/start method
+	
+	//this creates layout
 	VBox layout = new VBox();
     
-    //Liz: sign-up screen
+    //sign-up screen
     VBox signupScreen = new VBox();
     Label signupTitle = new Label("Sign up:");
     Label signupUsernameLabel = new Label("Username: ");
@@ -35,7 +35,7 @@ public class App extends Application {
     Button backToLogin = new Button("Back to Login");
     
 
-    //Liz: login screen
+    //login screen
     VBox loginScreen = new VBox();
     Label loginTitle = new Label("Login:");
     Label usernameLabel = new Label("Username: ");
@@ -46,11 +46,30 @@ public class App extends Application {
     Button loginSend = new Button("Login");
     Button signUpButton = new Button("Sign Up");
     Label successLabel = new Label("");
+    
+    //messaging screen
+    VBox messageScreen = new VBox();
+    StackPane messageHistory = new StackPane();
+    HBox messageLine = new HBox();
+    TextField newMessageBox = new TextField("Message");
+    Button btSend = new Button("Send");
+    
+    //Current user variables:
+    User sessionUser = null;
+    String sessionUserName = "";
 
-
+    
+    
+    
+    
+    
+    
+    
+    
+    //START METHOD!
     @Override
     public void start(Stage stage) {
-    	//Liz: construct screen layouts
+    	//construct screen layouts
     	loginScreen.getChildren().add(loginTitle);
     	loginScreen.getChildren().add(usernameLabel);
     	loginScreen.getChildren().add(usernameBox);
@@ -69,70 +88,60 @@ public class App extends Application {
     	signupScreen.getChildren().add(signupErrorLabel);
     	signupScreen.getChildren().add(signUpSubmit);
     	signupScreen.getChildren().add(backToLogin);
-    	    
-    	    
-    	//Liz: Initialize app.
-    	layout.getChildren().add(loginScreen);	
     	
+    	renderThings(messageHistory);
+    	messageScreen.getChildren().add(messageHistory);
+    	messageLine.getChildren().add(newMessageBox);
+        //Jorge: adding a button that sends a message >:)
+        messageLine.getChildren().add(btSend);
+        messageScreen.getChildren().add(messageLine);
+        
+
+    	
+    	//button event listeners
         loginSend.setOnAction(loggingInEvent);
     	signUpSubmit.setOnAction(signingUpEvent);
         signUpButton.setOnAction(toSignUpScreenEvent);
     	backToLogin.setOnAction(toLoginScreenEvent);
-    	
+	    btSend.setOnAction(newMessageEvent);
+
+    	    
+    	//Initialize app.
+    	layout.getChildren().add(messageScreen);	
+    	messageHistory.setPrefSize(640, 375);
+    	newMessageBox.setPrefWidth(597);
         Scene scene = new Scene(layout, 640, 400);
         stage.setScene(scene);
         stage.setResizable(false);
         stage.show();
-        /*
-        //Liz: scrollable area that contains the message history
-        //Liz: message history should be rendered in this element
-        StackPane messageHistory = new StackPane();
-        messageHistory.setPrefSize(640, 375);
-        layout.getChildren().add(messageHistory);
-        renderThings(messageHistory);
-        
-        //Liz: box that new messages are typed in
-        */
-        
-
-        /* //Jorge: added an Event handler 
-        TextField newMessageBox = new TextField("Message");
-        newMessageBox.setOnAction(e -> new Message(UserStore.getUserName,newMessageBox.getText()));
-        layout.getChildren().add(newMessageBox);
-        //TODO: Liz: make a call to store message here.
-        
-        //Jorge: adding a button that sends a message >:)
-        Button btSend = new Button("Send");
-	    btSend.setOnAction(new EventHandler<ActionEvent>() {
-	    	
-	    	@Override
-	    	public void handle(ActionEvent onBtPress) {
-	    		
-	    		Message message = new Message(this.getUserName(),newMessageBox.getText());
-	    	}
-	    });
-        layout.getChildren().add(btSend); */
-        
 
     }
 
     public static void main(String[] args) {
         launch();
     }
+    //END OF START METHOD!!!! WARY OF CODE BELOW!!!!
     
-    //Liz: Sorry in advance for terrible unreadable code -- this should work, trust me.
-    //Liz: If it doesn't work --  welp we're screwed.
-    //Liz: (jk i'll just try 2 fix it)
+    
+    
+    
+    
+    
+    
+    //Sorry in advance for terrible unreadable code -- this should work, trust me.
+    //If it doesn't work --  welp we're screwed.
+    //(jk i'll just try 2 fix it)
+
     void renderThings(StackPane messageHistory) {
-    	//Liz: clears already rendered messages
+    	//clears already rendered messages
     	messageHistory.getChildren().clear();
     	
-    	//Liz: stores HBoxes of messages to be added
+    	//stores HBoxes of messages to be added
     	ArrayList<VBox> elementList = new ArrayList<>();
-    	//Liz: this terribleness is necessary for my IDE to stop nagging me about messages being accessed in a static way
+    	//this terribleness is necessary for my IDE to stop nagging me about messages being accessed in a static way
     	ArrayList<Message> messages = MessageStore.messages;
     	
-    	//Liz: for each message: makes an HBox and adds to the ArrayList
+    	//for each message: makes an HBox and adds to the ArrayList
     	try {
 			for(int i = 0; i<messages.size(); i++) { 
 				VBox thisElement = new VBox();
@@ -147,17 +156,20 @@ public class App extends Application {
 			
 		}
     	
-    	//Liz: adds contents of arrayList to the Layout -- see line 27.
+    	//adds contents of arrayList to the Layout -- see line 27.
     	for(int i = 0; i<elementList.size(); i++) {
     		messageHistory.getChildren().add(elementList.get(i));
     	}
     }
+
+
+    
     
     //event handling methods
     EventHandler<ActionEvent> signingUpEvent = new EventHandler<>() {
     	@Override public void handle(ActionEvent e) {
     		
-    		//Liz: checks if user w/ name exists, if not, makes new user by that name
+    		//checks if user w/ name exists, if not, makes new user by that name
     		boolean exists = UserStore.userExists(signupUsernameBox.getText());
     		if(exists == false) {
     			UserStore.addUser(new User(signupUsernameBox.getText(), signupPasswordBox.getText()));
@@ -178,10 +190,11 @@ public class App extends Application {
     	@Override public void handle(ActionEvent e) {
     		
     		//checks if login details are valid
-    		boolean loginVerified = 
-Login.validateLogin(usernameBox.getText(), passwordBox.getText());
+    		boolean loginVerified = Login.validateLogin(usernameBox.getText(), passwordBox.getText());
     		if(loginVerified == true) {
-    			//TODO: successful login stuff
+    			sessionUserName = usernameBox.getText();
+    			layout.getChildren().clear();
+    			layout.getChildren().add(messageScreen);
     		} else {
     			usernameBox.clear();
     			passwordBox.clear();
@@ -203,5 +216,11 @@ Login.validateLogin(usernameBox.getText(), passwordBox.getText());
     		layout.getChildren().clear();
     		layout.getChildren().add(loginScreen);
     	}
+    };
+    EventHandler<ActionEvent> newMessageEvent = new EventHandler<>() {
+    	@Override public void handle(ActionEvent e) {	    		
+	    		Message message = new Message(sessionUserName,newMessageBox.getText());
+	    		newMessageBox.clear();
+	    }
     };
 }

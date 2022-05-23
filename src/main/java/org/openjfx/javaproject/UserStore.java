@@ -1,6 +1,6 @@
 package org.openjfx.javaproject;
 import java.util.ArrayList;
-//Liz: this is a static class -- should not be able to instantiate this.
+//this is a static class -- should not be able to instantiate this.
 final class UserStore {
 	public static ArrayList<User> userStore = new ArrayList<>();
 	private UserStore() {

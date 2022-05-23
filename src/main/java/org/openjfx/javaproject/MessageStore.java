@@ -7,7 +7,7 @@ final class MessageStore {
 	private MessageStore() {
 		
 	}
-	public static ArrayList<Message> messages;
+	public static ArrayList<Message> messages = new ArrayList<>();
 	public static void addMessage(Message message) {
 		messages.add(message);
 	}

@@ -220,11 +220,11 @@ public class App extends Application {
     		layout.getChildren().add(loginScreen);
     	}
     };
-    //FIX: Throws NullPointerException
     EventHandler<ActionEvent> newMessageEvent = new EventHandler<>() {
     	@Override public void handle(ActionEvent e) {	    			
     		Message message = new Message(sessionUserName,newMessageBox.getText());
 	    	MessageStore.addMessage(message);
+	    	renderThings(messageHistory);
 	    	newMessageBox.clear();
 	    }
     };

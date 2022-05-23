@@ -8,6 +8,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
@@ -48,8 +49,9 @@ public class App extends Application {
     Label successLabel = new Label("");
     
     //messaging screen
-    VBox messageScreen = new VBox();
-    StackPane messageHistory = new StackPane();
+    ScrollPane mainScreen = new ScrollPane();			//NEW: added a scrollable interface
+    VBox messageScreen = new VBox();					//mainScreen takes in messageScreen which holds all messages
+    VBox messageHistory = new VBox();					//messageHistory is now VBox from StackPane to prevent overlaying messages
     HBox messageLine = new HBox();
     TextField newMessageBox = new TextField("Message");
     Button btSend = new Button("Send");
@@ -112,6 +114,7 @@ public class App extends Application {
     	layout.getChildren().add(loginScreen);	
     	messageHistory.setPrefSize(640, 375);
     	newMessageBox.setPrefWidth(597);
+    	mainScreen.setContent(messageScreen);				//mainScreen takes in messageScreen
         Scene scene = new Scene(layout, 640, 400);
         stage.setScene(scene);
         stage.setResizable(false);
@@ -134,7 +137,7 @@ public class App extends Application {
     //If it doesn't work --  welp we're screwed.
     //(jk i'll just try 2 fix it)
 
-    void renderThings(StackPane messageHistory) {
+    void renderThings(VBox messageHistory) {
     	//clears already rendered messages
     	messageHistory.getChildren().clear();
     	
@@ -197,7 +200,7 @@ public class App extends Application {
     			sessionUserName = usernameBox.getText();
     			layout.getChildren().clear();
     	    	renderThings(messageHistory);
-    			layout.getChildren().add(messageScreen);
+    			layout.getChildren().add(mainScreen);		//Displays mainScreen instead of messageScreen
     		} else {
     			usernameBox.clear();
     			passwordBox.clear();

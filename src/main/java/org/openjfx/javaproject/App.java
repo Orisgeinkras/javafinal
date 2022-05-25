@@ -1,6 +1,10 @@
 package org.openjfx.javaproject;
 import java.util.ArrayList;
 
+import java.net.ServerSocket;
+import java.util.Vector;
+import java.util.concurrent.ExecutorService;
+
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -19,6 +23,26 @@ import javafx.stage.Stage;
  * JavaFX App
  */
 public class App extends Application {
+	//Use of thread pool (threadPool technique is used to operate the server stably with limited resources.)
+	public static ExecutorService threadPool;
+	
+	//This makes it possible to manage connected clients, etc.
+	public static Vector<Client> client = new Vector<Client>();
+	
+	//create server socket
+	ServerSocket serverSocekt;
+	
+	//A method that starts the server and waits for a connection from the client.
+	public void startServer(String IP, int port) {
+		
+	}
+	
+	//Method to stop the server from working
+	public void stopServer() {
+		
+	}
+
+
 	//made some things class variables instead of clogging up the main/start method
 	
 	//this creates layout
@@ -183,7 +207,7 @@ public class App extends Application {
     			layout.getChildren().add(loginScreen);
     			signupErrorLabel.setText("");
     			errorLabel.setText("");
-    		} else{
+    		} else{																																																							
     			if(signupErrorLabel.getText() == "") {
     				signupErrorLabel.setText("Error: User already exists.");
     				successLabel.setText("");

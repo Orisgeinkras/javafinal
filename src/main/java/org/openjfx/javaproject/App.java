@@ -200,7 +200,8 @@ public class App extends Application {
     			sessionUserName = usernameBox.getText();
     			layout.getChildren().clear();
     	    	renderThings(messageHistory);
-    			layout.getChildren().add(mainScreen);		//Displays mainScreen instead of messageScreen
+    			layout.getChildren().add(mainScreen);		
+    			Server.clientConnects(messageHistory);		//Displays User has Connected message
     		} else {
     			usernameBox.clear();
     			passwordBox.clear();

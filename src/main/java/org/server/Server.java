@@ -1,4 +1,4 @@
-package org.openjfx.javaproject;
+package org.openjfx.server;
 
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -50,15 +50,15 @@ public class Server {
 	public static void clientConnects(VBox messageHistory){
 		VBox client = new VBox();
 		client.setPrefWidth(360);
-		Label nameLabel = new Label(UserStore.getUsernameByID(MessageStore.messages.get(0).getAuthor()) + " has joined the chat!");
+		Label nameLabel = new Label( sessionUserName + " has joined the chat!"); //<- Need a way to recieve User Name
 		client.getChildren().add(nameLabel);
 		messageHistory.getChildren().add(client);  
 	}
 	
 	//This should be a main method. It hosts the connection between clients and should only be called once
-	public static void newServer(){
+	public static void main(Strings[] args){
 		try {
-			ServerSocket serverSocket = new ServerSocket(4200);
+			ServerSocket serverSocket = new ServerSocket(4200);	
 			Server server = new Server(serverSocket);
 			server.startServer();
 		} catch (IOException e) {

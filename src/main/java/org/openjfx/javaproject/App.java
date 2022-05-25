@@ -1,5 +1,6 @@
 package org.openjfx.javaproject;
 import java.util.ArrayList;
+import java.io.IOException;
 
 import java.net.ServerSocket;
 import java.util.Vector;
@@ -23,25 +24,6 @@ import javafx.stage.Stage;
  * JavaFX App
  */
 public class App extends Application {
-	//Use of thread pool (threadPool technique is used to operate the server stably with limited resources.)
-	public static ExecutorService threadPool;
-	
-	//This makes it possible to manage connected clients, etc.
-	public static Vector<Client> client = new Vector<Client>();
-	
-	//create server socket
-	ServerSocket serverSocekt;
-	
-	//A method that starts the server and waits for a connection from the client.
-	public void startServer(String IP, int port) {
-		
-	}
-	
-	//Method to stop the server from working
-	public void stopServer() {
-		
-	}
-
 
 	//made some things class variables instead of clogging up the main/start method
 	
@@ -226,6 +208,11 @@ public class App extends Application {
     	    	renderThings(messageHistory);
     			layout.getChildren().add(mainScreen);		
     			Server.clientConnects(messageHistory);		//Displays User has Connected message
+    			try {
+    				Client.newClient(sessionUserName);
+    			}catch(IOException ex) {
+    				ex.printStackTrace();
+    			}
     		} else {
     			usernameBox.clear();
     			passwordBox.clear();

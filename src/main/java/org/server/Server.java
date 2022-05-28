@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 
+import org.openjfx.javaproject.App;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 
@@ -50,11 +51,10 @@ public class Server {
 	public static void clientConnects(VBox messageHistory){
 		VBox client = new VBox();
 		client.setPrefWidth(360);
-		Label nameLabel = new Label( sessionUserName + " has joined the chat!"); //<- Need a way to recieve User Name
+		Label nameLabel = new Label( App.sessionUserName + " has joined the chat!"); //<- Need a way to recieve User Name
 		client.getChildren().add(nameLabel);
 		messageHistory.getChildren().add(client);  
 	}
-	
 	//This should be a main method. It hosts the connection between clients and should only be called once
 	public static void main(Strings[] args){
 		try {

@@ -8,6 +8,8 @@ import java.io.OutputStreamWriter;
 import java.net.Socket;
 import java.util.ArrayList;
 
+import org.openjfx.javaproject.App;
+
 /*	ClientHandler is used by the Server to keep track of all the Clients currently in the chat room
  * 	ClientHandler has similar functions to Client
  * 	ClientHandler allows server to communicate to Users using their own Client 
@@ -28,7 +30,7 @@ public class ClientHandler implements Runnable{
 		this.socket = socket;
 		this.bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 		this.bufferedWriter = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
-		this.userName = sessionUserName; // <-- Need a way to take in User name
+		this.userName = App.sessionUserName;
 		clientList.add(this);
 		
 		} catch(IOException e) {

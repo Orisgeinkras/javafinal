@@ -64,7 +64,7 @@ public class App extends Application {
     
     //Current user variables:
     User sessionUser = null;
-    String sessionUserName = "";
+    public static String sessionUserName = " ";
 
     
     

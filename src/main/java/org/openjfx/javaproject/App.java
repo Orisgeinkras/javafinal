@@ -2,10 +2,6 @@ package org.openjfx.javaproject;
 import java.util.ArrayList;
 import java.io.IOException;
 
-import java.net.ServerSocket;
-import java.util.Vector;
-import java.util.concurrent.ExecutorService;
-
 import org.server.Server;
 
 import javafx.application.Application;
@@ -18,7 +14,6 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
@@ -52,6 +47,10 @@ public class App extends Application {
     Label passwordLabel = new Label("Password: ");
     PasswordField passwordBox = new PasswordField();
     Label errorLabel = new Label("");
+    Label connectionLabel = new Label("Server IP: ");
+    TextField connectionBox = new TextField();
+    Label portLabel = new Label("Port: ");
+    TextField portBox = new TextField();
     Button loginSend = new Button("Login");
     Button signUpButton = new Button("Sign Up");
     Label successLabel = new Label("");
@@ -67,7 +66,8 @@ public class App extends Application {
     //Current user variables:
     User sessionUser = null;
     public static String sessionUserName = " ";
-
+    public static String connectionIP = " ";
+    public static int connectionPort = 0;
     
     
     
@@ -86,6 +86,10 @@ public class App extends Application {
     	loginScreen.getChildren().add(passwordLabel);
     	loginScreen.getChildren().add(passwordBox);
     	loginScreen.getChildren().add(errorLabel);
+    	loginScreen.getChildren().add(connectionLabel);
+    	loginScreen.getChildren().add(connectionBox);
+    	loginScreen.getChildren().add(portLabel);
+    	loginScreen.getChildren().add(portBox);
     	loginScreen.getChildren().add(loginSend);
     	loginScreen.getChildren().add(signUpButton);
 		loginScreen.getChildren().add(successLabel);
@@ -121,7 +125,7 @@ public class App extends Application {
     	//Initialize app.
     	layout.getChildren().add(loginScreen);	
     	messageHistory.setPrefSize(640, 375);
-    	newMessageBox.setPrefWidth(597);
+    	newMessageBox.setPrefWidth(580);
     	mainScreen.setContent(messageScreen);				//mainScreen takes in messageScreen
         Scene scene = new Scene(layout, 640, 400);
         stage.setScene(scene);
@@ -204,7 +208,13 @@ public class App extends Application {
     		
     		//checks if login details are valid
     		boolean loginVerified = Login.validateLogin(usernameBox.getText(), passwordBox.getText());
+    		try {
+    			connectionPort = Integer.parseInt(portBox.getText());
+    		} catch (NumberFormatException ex) {
+    			loginVerified = false;
+    		}
     		if(loginVerified) {
+    			connectionIP = connectionBox.getText();
     			sessionUserName = usernameBox.getText();
     			layout.getChildren().clear();
     	    	renderThings(messageHistory);
@@ -219,7 +229,7 @@ public class App extends Application {
     			usernameBox.clear();
     			passwordBox.clear();
     			if(errorLabel.getText() == "") {
-    				errorLabel.setText("Invalid Username or Password.");
+    				errorLabel.setText("Invalid Username, Password, or Port.");
     				successLabel.setText("");
     			}
     		}

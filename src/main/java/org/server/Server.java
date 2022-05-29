@@ -18,14 +18,14 @@ public class Server {
 	//Constructor to server object
 	public Server(ServerSocket serversocket) {
 		this.serverSocket = serversocket;
-	}
-	
+	}	
 	public void startServer() {
 		try {	
 			//Keeps Server Open until a client connects. Code is halted until client connects.
 			//Once client connects, a socket is created and send into the Client Handler
 			//A new Thread is created for each client that joins, keeping clients updated as server changes
 			while(!serverSocket.isClosed()) {
+				System.out.println("waiting for connection...")
 				Socket socket = serverSocket.accept();
 				ClientHandler clientHandler = new ClientHandler(socket);
 				Thread thread = new Thread(clientHandler);
@@ -36,7 +36,6 @@ public class Server {
 			closeServerSocket();
 		}
 	}
-	
 	//Incase Server Socket fails to open and Server Socket is equal to NULL
 	public void closeServerSocket() {
 		try {
@@ -52,6 +51,7 @@ public class Server {
 		VBox client = new VBox();
 		client.setPrefWidth(360);
 		Label nameLabel = new Label( App.sessionUserName + " has joined the chat!"); //<- Need a way to recieve User Name
+		System.out.println(App.sessionUserName + " has joined the chat!");
 		client.getChildren().add(nameLabel);
 		messageHistory.getChildren().add(client);  
 	}

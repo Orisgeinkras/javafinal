@@ -239,6 +239,8 @@ public class App extends Application {
     	@Override public void handle(ActionEvent e) {	    			
     		Message message = new Message(sessionUserName,newMessageBox.getText());
 	    	MessageStore.addMessage(message);
+	    	System.out.println(newMessageBox.getText());	//This is to check if it works, will delete later
+	    	Client.newMessage(newMessageBox.getText());
 	    	renderThings(messageHistory);
 	    	newMessageBox.clear();
 	    }

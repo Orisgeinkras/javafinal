@@ -37,7 +37,6 @@ public class ClientHandler implements Runnable{
 			closeEverything(socket, bufferedReader,bufferedWriter);
 		}
 	}
-	
 	//This essentially reads whatever is input into the console
 	@Override
 	public void run() {	

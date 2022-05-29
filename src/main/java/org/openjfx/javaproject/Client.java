@@ -14,6 +14,7 @@ public class Client {
 	private BufferedWriter bufferedWriter;
 	private BufferedReader bufferedReader;
 	private String userName;
+	private static String messageToSend;
 	
 	//create constructor
 	public Client(Socket socket,String userName) {
@@ -28,6 +29,7 @@ public class Client {
 	}
 	//A method that receives messages from the client.
 	//This method starts a new thread and allows Users to recieve and send messages simultaneously
+	//This method should also display messages from other users
 	public void receiveMessages() {
 		new Thread(new Runnable() {
 			@Override
@@ -47,10 +49,9 @@ public class Client {
 	}
 		
 	//A method that sends a message to the client.
-	public void send(String message) {
+	public void send() {
 		try {
-			while(socket.isConnected()) {
-				String messageToSend = message;
+			while(socket.isConnected()) {	
 				bufferedWriter.write(messageToSend);
 				bufferedWriter.newLine();
 				bufferedWriter.flush();
@@ -62,11 +63,15 @@ public class Client {
 	//this method creates a new Client and should be executed on Login
 	public static void newClient(String userName) throws IOException{
 
-		Socket socket = new Socket("local host",4200);	//this will only run on your own computer!!
+		Socket socket = new Socket("localhost",4200);	//this will only run on your own computer!!
 		Client client = new Client(socket,userName);
 		client.receiveMessages();
-		client.sendMessage(userName);
+		client.sendMessage();
 	
+	}
+	//Updates newMessage to send to the socket
+	public static void newMessage(String message) {
+		Client.messageToSend = message;
 	}
 	//Exception Handling
 	void closeEverything(Socket socket, BufferedReader bufferedReader,BufferedWriter bufferedWriter){

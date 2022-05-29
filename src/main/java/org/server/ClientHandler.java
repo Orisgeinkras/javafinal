@@ -7,6 +7,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.Socket;
 import java.util.ArrayList;
+import org.openjfx.javaproject.User;
 
 import org.openjfx.javaproject.App;
 
@@ -23,6 +24,7 @@ public class ClientHandler implements Runnable{
 	private BufferedWriter bufferedWriter;
 	private BufferedReader bufferedReader;
 	private String userName;
+	private User user;
 
 	//This creates a client for the server
 	ClientHandler(Socket socket) {
@@ -31,6 +33,7 @@ public class ClientHandler implements Runnable{
 		this.bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 		this.bufferedWriter = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
 		this.userName = App.sessionUserName;
+		this.user = App.sessionUser;
 		clientList.add(this);
 		
 		} catch(IOException e) {
@@ -56,7 +59,7 @@ public class ClientHandler implements Runnable{
 	public void broadcastMessage(String message) {
 		for(int i = 0; i < clientList.size(); i++) {
 			try {
-				if(!clientList.get(i).equals(userName)) {
+				if(!clientList.get(i).user.equals(user)) {
 					clientList.get(i).bufferedWriter.write(message);
 					clientList.get(i).bufferedWriter.newLine();
 					clientList.get(i).bufferedWriter.flush();

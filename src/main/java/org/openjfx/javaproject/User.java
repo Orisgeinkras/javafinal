@@ -1,6 +1,6 @@
 package org.openjfx.javaproject;
 
-class User {
+public class User {
 	int userID;
 	String userName;
 	private String password;

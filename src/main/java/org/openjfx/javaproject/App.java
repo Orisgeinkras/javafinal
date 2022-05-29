@@ -58,13 +58,13 @@ public class App extends Application {
     //messaging screen
     ScrollPane mainScreen = new ScrollPane();			//NEW: added a scrollable interface
     VBox messageScreen = new VBox();					//mainScreen takes in messageScreen which holds all messages
-    VBox messageHistory = new VBox();					//messageHistory is now VBox from StackPane to prevent overlaying messages
+    static VBox messageHistory = new VBox();					//messageHistory is now VBox from StackPane to prevent overlaying messages
     HBox messageLine = new HBox();
     TextField newMessageBox = new TextField("Message");
     Button btSend = new Button("Send");
     
     //Current user variables:
-    User sessionUser = null;
+    public static User sessionUser = null;
     public static String sessionUserName = " ";
     public static String connectionIP = " ";
     public static int connectionPort = 0;
@@ -149,7 +149,7 @@ public class App extends Application {
     //If it doesn't work --  welp we're screwed.
     //(jk i'll just try 2 fix it)
 
-    void renderThings(VBox messageHistory) {
+    public static void renderThings(VBox messageHistory) {
     	//clears already rendered messages
     	messageHistory.getChildren().clear();
     	
@@ -216,6 +216,7 @@ public class App extends Application {
     		if(loginVerified) {
     			connectionIP = connectionBox.getText();
     			sessionUserName = usernameBox.getText();
+    			sessionUser = UserStore.findUserbyName(sessionUserName);
     			layout.getChildren().clear();
     	    	renderThings(messageHistory);
     			layout.getChildren().add(mainScreen);		

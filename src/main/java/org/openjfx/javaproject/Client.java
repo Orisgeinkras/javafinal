@@ -16,6 +16,9 @@ public class Client {
 	private String userName;
 	private static String messageToSend;
 	
+	private BufferedWriter authorUser;
+	private BufferedReader authorUserReader;
+	
 	//create constructor
 	public Client(Socket socket,String userName) {
 		try {
@@ -25,6 +28,7 @@ public class Client {
 			this.userName = userName;
 		}catch(IOException e) {
 			closeEverything(socket,bufferedReader,bufferedWriter);
+			closeEverything(socket, authorUserReader, authorUser);
 		}
 	}
 	//A method that receives messages from the client.
@@ -34,12 +38,17 @@ public class Client {
 		new Thread(new Runnable() {
 			@Override
 			public void run() {
+				//TODO: Liz: I don't know why, I fear the answer, but this code isn't working.
 				String messageFromChat;
-				
+				Message recievedMessage;
+				String authorUserName;
 				try {
 					while(socket.isConnected()) {
 						messageFromChat = bufferedReader.readLine();
-						
+						authorUserName = authorUserReader.readLine();
+						recievedMessage = new Message(authorUserName, messageFromChat);
+						MessageStore.addMessage(recievedMessage);
+						App.renderThings(App.messageHistory);
 					}
 				}catch(IOException e) {
 					closeEverything(socket,bufferedReader,bufferedWriter);
@@ -55,9 +64,13 @@ public class Client {
 				bufferedWriter.write(messageToSend);
 				bufferedWriter.newLine();
 				bufferedWriter.flush();
+				authorUser.write(userName);
+				authorUser.newLine();
+				authorUser.flush();
 			}
 		}catch(IOException e) {
 			closeEverything(socket,bufferedReader,bufferedWriter);
+			closeEverything(socket, authorUserReader, authorUser);
 		}
 	}
 	//this method creates a new Client and should be executed on Login

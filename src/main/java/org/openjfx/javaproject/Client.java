@@ -63,10 +63,10 @@ public class Client {
 	//this method creates a new Client and should be executed on Login
 	public static void newClient(String userName) throws IOException{
 
-		Socket socket = new Socket("localhost",4200);	//this will only run on your own computer!!
+		Socket socket = new Socket("127.0.0.1", 6664);	//this will only run on your own computer!!
 		Client client = new Client(socket,userName);
 		client.receiveMessages();
-		client.sendMessage();
+		//client.sendMessage();
 	
 	}
 	//Updates newMessage to send to the socket

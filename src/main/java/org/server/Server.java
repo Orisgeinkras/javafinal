@@ -1,4 +1,4 @@
-package org.openjfx.server;
+package org.server;
 
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -25,7 +25,7 @@ public class Server {
 			//Once client connects, a socket is created and send into the Client Handler
 			//A new Thread is created for each client that joins, keeping clients updated as server changes
 			while(!serverSocket.isClosed()) {
-				System.out.println("waiting for connection...")
+				System.out.println("waiting for connection...");
 				Socket socket = serverSocket.accept();
 				ClientHandler clientHandler = new ClientHandler(socket);
 				Thread thread = new Thread(clientHandler);
@@ -56,7 +56,7 @@ public class Server {
 		messageHistory.getChildren().add(client);  
 	}
 	//This should be a main method. It hosts the connection between clients and should only be called once
-	public static void main(Strings[] args){
+	public static void main(String[] args){
 		try {
 			ServerSocket serverSocket = new ServerSocket(4200);	
 			Server server = new Server(serverSocket);

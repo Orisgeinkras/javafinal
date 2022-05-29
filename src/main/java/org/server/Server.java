@@ -58,7 +58,7 @@ public class Server {
 	//This should be a main method. It hosts the connection between clients and should only be called once
 	public static void main(String[] args){
 		try {
-			ServerSocket serverSocket = new ServerSocket(4200);	
+			ServerSocket serverSocket = new ServerSocket(6667);	
 			Server server = new Server(serverSocket);
 			server.startServer();
 		} catch (IOException e) {

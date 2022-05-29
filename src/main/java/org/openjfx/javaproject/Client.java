@@ -35,14 +35,16 @@ public class Client {
 			@Override
 			public void run() {
 				String messageFromChat;
-				
+
 				try {
 					while(socket.isConnected()) {
 						messageFromChat = bufferedReader.readLine();
-						
+						System.out.println(messageFromChat);
 					}
 				}catch(IOException e) {
 					closeEverything(socket,bufferedReader,bufferedWriter);
+				}catch(NullPointerException i) {
+					System.out.println(" ");
 				}
 			}
 		}).start();
@@ -58,6 +60,8 @@ public class Client {
 			}
 		}catch(IOException e) {
 			closeEverything(socket,bufferedReader,bufferedWriter);
+		}catch(NullPointerException i) {
+			System.out.println(" ");
 		}
 	}
 	//this method creates a new Client and should be executed on Login

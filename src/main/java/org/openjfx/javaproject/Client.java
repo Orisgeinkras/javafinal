@@ -14,7 +14,7 @@ public class Client {
 	private Socket socket;
 	private BufferedWriter bufferedWriter;
 	private BufferedReader bufferedReader;
-	public String userName;
+	private String userName;
 	private static String messageToSend;
 	
 	private BufferedWriter authorUser;
@@ -67,25 +67,21 @@ public class Client {
 		
 	//A method that sends a message to the client.
 	public void sendMessage() {
-		new Thread(new Runnable() {
-			public void run() {
-					try {
-						while(socket.isConnected()) {	
-							bufferedWriter.write(messageToSend);
-							bufferedWriter.newLine();
-							bufferedWriter.flush();
-							authorUser.write(userName);
-							authorUser.newLine();
-							authorUser.flush();
-						}
-					} catch(IOException e) {
-						closeEverything(socket,bufferedReader,bufferedWriter);
-						closeEverything(socket, authorUserReader, authorUser);
-					} catch(NullPointerException i) {
-						System.out.println(" ");
-					}
-				}
-		});
+		try {
+			while(socket.isConnected()) {	
+				bufferedWriter.write(messageToSend);
+				bufferedWriter.newLine();
+				bufferedWriter.flush();
+				authorUser.write(userName);
+				authorUser.newLine();
+				authorUser.flush();
+			}
+		}catch(IOException e) {
+			closeEverything(socket,bufferedReader,bufferedWriter);
+			closeEverything(socket, authorUserReader, authorUser);
+		}catch(NullPointerException i) {
+			System.out.println(" ");
+		}
 	}
 	//this method creates a new Client and should be executed on Login
 	public static void newClient(String userName) throws IOException,ConnectException{
@@ -95,7 +91,7 @@ public class Client {
 			socket.close();
 			try {
 				System.out.println("Connection Failed. Retrying connection...");
-				Thread.sleep(5000);
+				Thread.sleep(2000);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

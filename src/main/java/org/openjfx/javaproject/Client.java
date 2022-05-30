@@ -52,6 +52,9 @@ public class Client {
 					}
 				}catch(IOException e) {
 					closeEverything(socket,bufferedReader,bufferedWriter);
+					closeEverything(socket, authorUserReader, authorUser);
+				}catch(NullPointerException i) {
+					System.out.println(" ");
 				}
 			}
 		}).start();
@@ -71,12 +74,14 @@ public class Client {
 		}catch(IOException e) {
 			closeEverything(socket,bufferedReader,bufferedWriter);
 			closeEverything(socket, authorUserReader, authorUser);
+		}catch(NullPointerException i) {
+			System.out.println(" ");
 		}
 	}
 	//this method creates a new Client and should be executed on Login
 	public static void newClient(String userName) throws IOException{
 
-		Socket socket = new Socket("127.0.0.1", 6667);	//this will only run on your own computer!!
+		Socket socket = new Socket(App.connectionIP, App.connectionPort);	//this will only run on your own computer!!
 		Client client = new Client(socket,userName);
 		client.receiveMessages();
 		//client.sendMessage();

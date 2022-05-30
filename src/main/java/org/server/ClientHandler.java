@@ -52,6 +52,8 @@ public class ClientHandler implements Runnable{
 			}catch(IOException e) {
 				closeEverything(socket, bufferedReader,bufferedWriter);
 				break;
+			}catch(NullPointerException i) {
+				System.out.println(" ");
 			}
 		}
 	}

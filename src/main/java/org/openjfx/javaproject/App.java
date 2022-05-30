@@ -215,6 +215,7 @@ public class App extends Application {
     		}
     		if(loginVerified) {
     			connectionIP = connectionBox.getText();
+    			connectionPort = Integer.parseInt(portBox.getText());
     			sessionUserName = usernameBox.getText();
     			sessionUser = UserStore.findUserbyName(sessionUserName);
     			layout.getChildren().clear();

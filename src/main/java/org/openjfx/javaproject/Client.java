@@ -12,6 +12,7 @@ import java.net.ConnectException;
 public class Client {
 	
 	private Socket socket;
+	private Socket socket2;
 	private BufferedWriter bufferedWriter;
 	private BufferedReader bufferedReader;
 	private String userName;
@@ -21,7 +22,7 @@ public class Client {
 	private BufferedReader authorUserReader;
 	
 	//create constructor
-	public Client(Socket socket,String userName) {
+	public Client(Socket socket, Socket socket2, String userName) {
 		try {
 			this.socket = socket;
 			this.bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
@@ -29,7 +30,7 @@ public class Client {
 			this.userName = userName;
 		}catch(IOException e) {
 			closeEverything(socket,bufferedReader,bufferedWriter);
-			closeEverything(socket, authorUserReader, authorUser);
+			closeEverything(socket2, authorUserReader, authorUser);
 		}
 	}
 	//A method that receives messages from the client.
@@ -74,34 +75,51 @@ public class Client {
 			}
 		}catch(IOException e) {
 			closeEverything(socket,bufferedReader,bufferedWriter);
-			closeEverything(socket, authorUserReader, authorUser);
+			closeEverything(socket2, authorUserReader, authorUser);
 		}catch(NullPointerException i) {
 			System.out.println(" ");
 		}
 	}
 	//this method creates a new Client and should be executed on Login
-	public static void newClient(String userName) throws IOException,ConnectException{
+	public static Client newClient(String userName) throws IOException,ConnectException{
 
-		Socket socket = new Socket(App.connectionIP, App.connectionPort);	//this will only run on your own computer!!
+		Socket socket = new Socket(App.connectionIP, App.connectionPort);
+		Socket socket2 = new Socket(App.connectionIP, App.connectionPort);
 		if(!socket.isConnected()) {
 			socket.close();
+			socket2.close();
 			try {
 				System.out.println("Connection Failed. Retrying connection...");
-				Thread.sleep(2000);
+				Thread.sleep(5000);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
+				return null;
 			}
 			newClient(userName);
 		}
-		Client client = new Client(socket,userName);
+		if(!socket2.isConnected()) {
+			socket.close();
+			socket2.close();
+			try {
+				System.out.println("Connection Failed. Retrying connection...");
+				Thread.sleep(5000);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				return null;
+			}
+			newClient(userName);
+		}
+		Client client = new Client(socket, socket2, userName);
 		client.receiveMessages();
-		//client.sendMessage();
+		return(client);
 	
 	}
 	//Updates newMessage to send to the socket
-	public static void newMessage(String message) {
+	public void newMessage(String message) {
 		Client.messageToSend = message;
+		send();
 	}
 	//Exception Handling
 	void closeEverything(Socket socket, BufferedReader bufferedReader,BufferedWriter bufferedWriter){

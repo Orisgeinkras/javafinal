@@ -68,6 +68,7 @@ public class App extends Application {
     public static String sessionUserName = " ";
     public static String connectionIP = " ";
     public static int connectionPort = 0;
+    public static Client sessionClient;
     
     
     
@@ -113,7 +114,7 @@ public class App extends Application {
 
     	
     	//button event listeners
-        loginSend.setOnAction(loggingInEvent);
+        loginSend.setOnAction(logInEvent);
     	signUpSubmit.setOnAction(signingUpEvent);
         signUpButton.setOnAction(toSignUpScreenEvent);
     	backToLogin.setOnAction(toLoginScreenEvent);
@@ -203,7 +204,7 @@ public class App extends Application {
     		}
     	}
     };
-    EventHandler<ActionEvent> loggingInEvent = new EventHandler<>() {
+    EventHandler<ActionEvent> logInEvent = new EventHandler<>() {
     	@Override public void handle(ActionEvent e) {
     		
     		//checks if login details are valid
@@ -223,7 +224,7 @@ public class App extends Application {
     			layout.getChildren().add(mainScreen);		
     			Server.clientConnects(messageHistory);		//Displays User has Connected message
     			try {
-    				Client.newClient(sessionUserName);
+    				sessionClient = Client.newClient(sessionUserName);
     			}catch(IOException ex) {
     				ex.printStackTrace();
     			}
@@ -254,7 +255,7 @@ public class App extends Application {
     		Message message = new Message(sessionUserName,newMessageBox.getText());
 	    	MessageStore.addMessage(message);
 	    	System.out.println(newMessageBox.getText());	//This is to check if it works, will delete later
-	    	Client.newMessage(newMessageBox.getText());
+	    	sessionClient.newMessage(newMessageBox.getText());
 	    	renderThings(messageHistory);
 	    	newMessageBox.clear();
 	    }

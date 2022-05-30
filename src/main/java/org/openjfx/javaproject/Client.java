@@ -6,6 +6,7 @@ import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.net.ConnectException;
 
 //A class that allows you to communicate with the server. 
 public class Client {
@@ -79,9 +80,20 @@ public class Client {
 		}
 	}
 	//this method creates a new Client and should be executed on Login
-	public static void newClient(String userName) throws IOException{
+	public static void newClient(String userName) throws IOException,ConnectException{
 
 		Socket socket = new Socket(App.connectionIP, App.connectionPort);	//this will only run on your own computer!!
+		if(!socket.isConnected()) {
+			socket.close();
+			try {
+				System.out.println("Connection Failed. Retrying connection...");
+				Thread.sleep(2000);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			newClient(userName);
+		}
 		Client client = new Client(socket,userName);
 		client.receiveMessages();
 		//client.sendMessage();

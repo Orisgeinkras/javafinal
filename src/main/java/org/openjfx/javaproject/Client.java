@@ -45,7 +45,7 @@ public class Client {
 				Message recievedMessage;
 				String authorUserName;
 				try {
-					while(socket.isConnected()) {
+					while(socket.isConnected() && socket2.isConnected()) {
 						messageFromChat = bufferedReader.readLine();
 						authorUserName = authorUserReader.readLine();
 						recievedMessage = new Message(authorUserName, messageFromChat);
@@ -53,8 +53,8 @@ public class Client {
 						App.renderThings(App.messageHistory);
 					}
 				}catch(IOException e) {
-					closeEverything(socket,bufferedReader,bufferedWriter);
-					closeEverything(socket, authorUserReader, authorUser);
+					closeEverything(socket, bufferedReader,bufferedWriter);
+					closeEverything(socket2, authorUserReader, authorUser);
 				}catch(NullPointerException i) {
 					System.out.println(" ");
 				}
@@ -99,7 +99,6 @@ public class Client {
 			newClient(userName);
 		}
 		if(!socket2.isConnected()) {
-			socket.close();
 			socket2.close();
 			try {
 				System.out.println("Connection Failed. Retrying connection...");

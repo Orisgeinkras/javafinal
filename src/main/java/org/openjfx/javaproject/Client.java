@@ -27,10 +27,6 @@ public class Client {
 			this.bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 			this.bufferedWriter = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
 			this.userName = userName;
-			bufferedWriter.write(userName);
-			bufferedWriter.newLine();
-			bufferedWriter.flush();
-			
 		}catch(IOException e) {
 			closeEverything(socket,bufferedReader,bufferedWriter);
 			closeEverything(socket, authorUserReader, authorUser);

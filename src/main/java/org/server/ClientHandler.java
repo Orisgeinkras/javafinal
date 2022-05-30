@@ -33,6 +33,7 @@ public class ClientHandler implements Runnable{
 		this.bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 		this.bufferedWriter = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
 		String message;
+		this.user = App.sessionUser;
 		while(socket.isConnected()){
 			try {
 				Thread.sleep(1000);
@@ -51,7 +52,7 @@ public class ClientHandler implements Runnable{
 			}
 		}
 		
-		this.user = App.sessionUser;
+
 		clientList.add(this);
 		
 		} catch(IOException e) {

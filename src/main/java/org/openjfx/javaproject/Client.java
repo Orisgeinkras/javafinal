@@ -62,7 +62,7 @@ public class Client {
 	}
 		
 	//A method that sends a message to the client.
-	public void send() {
+	public void sendMessage() {
 		try {
 			while(socket.isConnected()) {	
 				bufferedWriter.write(messageToSend);
@@ -96,7 +96,7 @@ public class Client {
 		}
 		Client client = new Client(socket,userName);
 		client.receiveMessages();
-		//client.sendMessage();
+		client.sendMessage();
 	
 	}
 	//Updates newMessage to send to the socket

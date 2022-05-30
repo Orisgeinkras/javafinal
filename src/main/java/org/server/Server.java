@@ -3,8 +3,6 @@ package org.server;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
-
-import org.openjfx.javaproject.App;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 
@@ -47,11 +45,11 @@ public class Server {
 		}
 	}
 	//Displays a connection message to the Message Chat
-	public static void clientConnects(VBox messageHistory){
+	public static void clientConnects(VBox messageHistory, String userName){
 		VBox client = new VBox();
 		client.setPrefWidth(360);
-		Label nameLabel = new Label( App.sessionUserName + " has joined the chat!"); //<- Need a way to recieve User Name
-		System.out.println(App.sessionUserName + ", has joined the chat!");
+		Label nameLabel = new Label(userName + " has joined the chat!"); //<- Need a way to recieve User Name
+		System.out.println(userName + ", has joined the chat!");
 		client.getChildren().add(nameLabel);
 		messageHistory.getChildren().add(client);  
 	}

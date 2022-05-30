@@ -221,7 +221,7 @@ public class App extends Application {
     			layout.getChildren().clear();
     	    	renderThings(messageHistory);
     			layout.getChildren().add(mainScreen);		
-    			Server.clientConnects(messageHistory);		//Displays User has Connected message
+    			Server.clientConnects(messageHistory, sessionUserName);		//Displays User has Connected message
     			try {
     				Client.newClient(sessionUserName);
     			}catch(IOException ex) {

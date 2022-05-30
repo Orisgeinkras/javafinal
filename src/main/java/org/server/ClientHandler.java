@@ -35,6 +35,7 @@ public class ClientHandler implements Runnable{
 		this.userName = App.sessionUserName;
 		this.user = App.sessionUser;
 		clientList.add(this);
+		System.out.println(this.userName + " has joined the Chat!");
 		
 		} catch(IOException e) {
 			closeEverything(socket, bufferedReader,bufferedWriter);
@@ -65,6 +66,8 @@ public class ClientHandler implements Runnable{
 					clientList.get(i).bufferedWriter.write(message);
 					clientList.get(i).bufferedWriter.newLine();
 					clientList.get(i).bufferedWriter.flush();
+					System.out.println(userName + " : ");
+					System.out.println(message);
 				}
 			}catch(IOException e) {
 				closeEverything(socket, bufferedReader,bufferedWriter);

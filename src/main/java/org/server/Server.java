@@ -51,7 +51,7 @@ public class Server {
 		VBox client = new VBox();
 		client.setPrefWidth(360);
 		Label nameLabel = new Label( App.sessionUserName + " has joined the chat!"); //<- Need a way to recieve User Name
-		System.out.println(App.sessionUserName + ", has joined the chat!");
+		System.out.println(App.sessionUserName + " has joined the chat!");
 		client.getChildren().add(nameLabel);
 		messageHistory.getChildren().add(client);  
 	}

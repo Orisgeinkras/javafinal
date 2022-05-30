@@ -32,25 +32,10 @@ public class ClientHandler implements Runnable{
 		this.socket = socket;
 		this.bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 		this.bufferedWriter = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
-		String message;
-		String userMessage [];					//////////NEW
-		while(socket.isConnected()){
-			try {
-				message = bufferedReader.readLine();
-				userMessage = message.split(","); 				//////NEW			
-				this.userName = userMessage[0];
-				broadcastMessage(message);
-			}catch(IOException e) {
-				closeEverything(socket, bufferedReader,bufferedWriter);
-				break;
-			}
-			catch(NullPointerException i) {
-				System.out.println(" ");
-			}
-		}
-		
+		this.userName = App.sessionUserName;
 		this.user = App.sessionUser;
 		clientList.add(this);
+		System.out.println(this.userName + " has joined the Chat!");
 		
 		} catch(IOException e) {
 			closeEverything(socket, bufferedReader,bufferedWriter);
